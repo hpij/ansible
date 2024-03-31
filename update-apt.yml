@@ -1,0 +1,26 @@
+##########################################################
+############## Update all appts
+##########################################################
+
+- name: apt-update && apt-upgrade on all raspberry pis
+  hosts: pis
+  become: true
+  gather_facts: false
+  become_user: root
+  tasks:
+    - name: sudo apt update
+#      apt: update_cache=yes cache_valid_time=3600
+      command: apt update
+      register: out_apt_update
+      changed_when: '"All packages are up to date." is not in out_apt_update.stdout'
+
+#    - debug: var=out_apt_update.stdout_lines
+
+    - name: sudo apt upgrade 
+      apt: upgrade=dist
+      when: '"All packages are up to date." is not in out_apt_update.stdout'
+
+    - name: Autoremove apt
+      ansible.builtin.apt:
+        autoremove: yes
+        purge: yes 
