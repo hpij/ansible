@@ -3,7 +3,7 @@
 ##########################################################
 
 - name: apt-update && apt-upgrade on all raspberry pis
-  hosts: vps
+  hosts: pis
   become: true
   gather_facts: false
   become_user: root
