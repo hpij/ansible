@@ -1,6 +1,6 @@
 ---
 - name: backup vaultwarden
-  hosts: vps
+  hosts: all
   gather_facts: false
   vars:
     local_directory: "/srv/dev-disk-by-uuid-76dc2b38-9823-4191-9f33-8a6bace5ccc4/docker-share/backup-vps/vaultwarden"
