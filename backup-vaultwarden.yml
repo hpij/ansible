@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: false
   vars:
-    local_directory: "/vw-backup-tmp"
+    local_directory: "/home/semaphore/vw-backup"
     remote_directory: "/vw-data"
     backup_name: "vaultwarden-vps-backup"
   tasks:
