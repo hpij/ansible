@@ -1,8 +1,8 @@
 ##########################################################
-############## Update all appts
+############## Update all apts
 ##########################################################
 
-- name: apt-update && apt-upgrade on all raspberry pis
+- name: apt-update && apt-upgrade on all host in Inventory
   hosts: all
   become: true
   gather_facts: false
