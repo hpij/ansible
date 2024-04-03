@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: false
   vars:
-    local_directory: "/srv/dev-disk-by-uuid-76dc2b38-9823-4191-9f33-8a6bace5ccc4/docker-share/backup-vps/vaultwarden"
+    local_directory: "/vw-backup-tmp"
     remote_directory: "/vw-data"
     backup_name: "vaultwarden-vps-backup"
   tasks:
