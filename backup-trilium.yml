@@ -1,0 +1,32 @@
+---
+- name: Backup Trilium-data from remote maschine
+  hosts: vps
+  gather_facts: false
+  vars:
+    local_directory: "/home/semaphore/trilium-backup"
+    remote_directory: "/trilium-data/backup/backup-daily.db"
+    backup_name: "trilium-vps-backup"
+  tasks:
+    - name: Get current date and time
+      command: date +"%Y-%m-%d_%H-%M-%S"
+      register: current_datetime
+      changed_when: false
+
+    - name: Archive {{ remote_directory }} directory with current date and time
+      command: tar -czf "/tmp/{{ current_datetime.stdout }}_{{ backup_name }}.tar.gz" -C {{ remote_directory }} .
+      become: true
+      register: tar_result
+      args:
+        chdir: /
+
+    - name: Fetch the archived file
+      fetch:
+        src: "/tmp/{{ current_datetime.stdout }}_{{ backup_name }}.tar.gz"
+        dest: "{{ local_directory }}/{{ current_datetime.stdout }}_{{ backup_name }}.tar.gz"
+        flat: yes
+        fail_on_missing: yes
+
+    - name: Delete the archived file from /tmp
+      file:
+        path: "/tmp/{{ current_datetime.stdout }}_{{ backup_name }}.tar.gz"
+        state: absent
