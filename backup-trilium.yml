@@ -5,6 +5,7 @@
   vars:
     local_directory: "/home/semaphore/trilium-backup"
     remote_file: "/trilium-data/backup/backup-daily.db"
+    backup_name: "trilium-backup"
   tasks:
     - name: Get current date and time
       command: date +"%Y-%m-%d_%H-%M-%S"
@@ -12,7 +13,7 @@
       changed_when: false
 
     - name: Archive {{ remote_file }} file with current date and time
-      command: tar -czf "/tmp/{{ current_datetime.stdout }}_backup-daily.tar.gz" -C "{{ remote_file | dirname }}" "{{ remote_file | basename }}"
+      command: tar -czf "/tmp/{{ current_datetime.stdout }}_{{ backup_name }}.tar.gz" -C "{{ remote_file | dirname }}" "{{ remote_file | basename }}"
       become: true
       register: tar_result
       args:
@@ -20,12 +21,12 @@
 
     - name: Fetch the archived file
       fetch:
-        src: "/tmp/{{ current_datetime.stdout }}_backup-daily.tar.gz"
-        dest: "{{ local_directory }}/{{ current_datetime.stdout }}_backup-daily.tar.gz"
+        src: "/tmp/{{ current_datetime.stdout }}_{{ backup_name }}.tar.gz"
+        dest: "{{ local_directory }}/{{ current_datetime.stdout }}_{{ backup_name }}.tar.gz"
         flat: yes
         fail_on_missing: yes
 
     - name: Delete the archived file from /tmp
       file:
-        path: "/tmp/{{ current_datetime.stdout }}_backup-daily.tar.gz"
+        path: "/tmp/{{ current_datetime.stdout }}_{{ backup_name }}.tar.gz"
         state: absent
