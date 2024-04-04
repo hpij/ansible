@@ -1,6 +1,6 @@
 ---
 - name: Backup Trilium-data from remote maschine
-  hosts: vps
+  hosts: all
   gather_facts: false
   vars:
     local_directory: "/home/semaphore/trilium-backup"
